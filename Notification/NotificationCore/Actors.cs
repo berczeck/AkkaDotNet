@@ -8,7 +8,7 @@ namespace NotificationCore
     {
         public void Handle(EMailNotification message)
         {
-            Context.ActorSelection("akka://NotificationSystem/user/ConsoleLogger")
+            Context.ActorSelection("/ConsoleLogger")
                .Tell("EmailSenderActor handle notification Email");
         }
     }
@@ -27,7 +27,7 @@ namespace NotificationCore
 
         public void Handle(EMailNotification message)
         {
-            Context.ActorSelection("akka://NotificationSystem/user/ConsoleLogger")
+            Context.ActorSelection("/ConsoleLogger")
                .Tell("EmailNotificationCoordinator handle notification Email");
 
             emailSender.Tell(message);
@@ -40,7 +40,7 @@ namespace NotificationCore
         public void Handle(SmsNotification message)
         {
             contador++;
-            Context.ActorSelection("akka://NotificationSystem/user/ConsoleLogger")
+            Context.ActorSelection("/ConsoleLogger")
                .Tell($"{Context.Self.Path} handle notification Sms");
 
             if (contador % 2 != 0)
@@ -63,7 +63,7 @@ namespace NotificationCore
 
         public void Handle(SmsNotification message)
         {
-            Context.ActorSelection("akka://NotificationSystem/user/ConsoleLogger")
+            Context.ActorSelection("/ConsoleLogger")
                .Tell("SmsNotificationCoordinator handle notification Sms");
 
             smsSender.Tell(message);

@@ -12,11 +12,11 @@ namespace Notification
             {
                var consoleLogger = system.ActorOf<ConsoleLogger>("ConsoleLogger");
                 //system.ActorOf<NotificationCoordinator>("NotificationCoordinator");
-
+                consoleLogger.Tell("Notification server started");
                 var notification= system.ActorOf(Props.Create(() => new NotificationCoordinator(consoleLogger)), "NotificationCoordinator");
 
-                notification.Tell(new NotificationCore.Notification("SMS"));
-                notification.Tell(new NotificationCore.Notification("SMS"));
+                //notification.Tell(new NotificationCore.Notification("SMS"));
+                //notification.Tell(new NotificationCore.Notification("SMS"));
 
                 Console.ReadKey();
 
