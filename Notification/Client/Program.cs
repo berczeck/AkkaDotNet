@@ -18,9 +18,11 @@ namespace Client
                 .Result;
 
                 consoleLogger.Tell("Notification client started");
-
-                notification.Tell(new Notification("SMS"));
-                notification.Tell(new Notification("SMS"));
+                
+                for (int i = 0; i < 20; i++)
+                {
+                    notification.Tell(new Notification("SMS", $"Mensaje {i}"));
+                }
 
                 consoleLogger.Tell("Notificaicon SMS enviada");
 
