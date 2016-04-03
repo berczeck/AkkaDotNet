@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using Akka.Actor;
+using System.Linq;
 using Akka.Persistence;
 using Core;
 
@@ -23,39 +23,66 @@ namespace PersistenceByEntity
             Recover((Action<TarjetaAgregada>)Apply);
             Recover((Action<TransaccionRegistrada>)Apply);
 
-            Recover<SnapshotOffer>(offer =>
-            {
-                var tarjetas = offer.Snapshot as List<Tarjeta>;
-                if (tarjetas != null)
-                {
-                    Tarjetas = tarjetas;
-                    return;
-                }
-
-            });
+            //Recover<SnapshotOffer>(offer =>
+            //{
+            //    var tarjetas = offer.Snapshot as List<Tarjeta>;
+            //    if (tarjetas != null)
+            //    {
+            //        Tarjetas = tarjetas;
+            //        return;
+            //    }
+            //     var transaccion = offer.Snapshot as Transaccion;
+            //    if (transaccion != null)
+            //    {
+            //        Transacciones.Add(transaccion);
+            //        return;
+            //    }
+            //});
 
             Command<ComandoAgregarTarjeta>(mensaje =>
             {
                 // TODO more tings
-                Persist(new TarjetaAgregada(mensaje.Tarjeta), Apply);
+                Persist(new TarjetaAgregada(mensaje.Tarjeta), evento =>
+                {
+                    Tarjetas.Add(evento.Tarjeta);
+                    Console.WriteLine($"EVT TarjetaAgregada Cliente: {id} - {evento}");
+                    //if (Tarjetas.Count % 3 == 0)
+                    //{
+                    //    SaveSnapshot(Tarjetas);
+                    //}
+                });
             });
             Command<ComandoRealizarTransaccion>(mensaje =>
             {
                 // TODO more tings
-                Persist(new TransaccionRegistrada(mensaje.Transaccion), Apply);
+                Persist(new TransaccionRegistrada(mensaje.Transaccion), evento =>
+                {
+                    Transacciones.Add(evento.Transaccion);
+                    Console.WriteLine($"EVT TransaccionRegistrada Cliente: {id} - {evento}");
+                    //if (Transacciones.Count > 3)
+                    //{
+                    //    var total = Transacciones.Sum(x => x.Monto);
+                    //    SaveSnapshot(new Transaccion(evento.Transaccion.NumeroCuenta, total));
+                    //}
+                });
             });
+            
+            //Command<SaveSnapshotSuccess>(exito =>
+            //{
+            //      DeleteMessages(exito.Metadata.SequenceNr, true);
+            //});
         }
         
         public void Apply(TarjetaAgregada evento)
         {
             Tarjetas.Add(evento.Tarjeta);
-            Console.WriteLine($"TarjetaAgregada Cliente: {id} - {evento}");
+            Console.WriteLine($"DB TarjetaAgregada Cliente: {id} - {evento}");
         }
 
         public void Apply(TransaccionRegistrada evento)
         {
             Transacciones.Add(evento.Transaccion);
-            Console.WriteLine($"TransaccionRegistrada Cliente: {id} - {evento}");
+            Console.WriteLine($"DB TransaccionRegistrada Cliente: {id} - {evento}");
         }
         
     }
