@@ -1,0 +1,93 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<configuration>
+  <configSections>
+    <section name="akka" type="Akka.Configuration.Hocon.AkkaConfigurationSection, Akka" />
+  </configSections>
+
+  <startup>
+    <supportedRuntime version="v4.0" sku=".NETFramework,Version=v4.5.2" />
+  </startup>
+  <runtime>
+    <assemblyBinding xmlns="urn:schemas-microsoft-com:asm.v1">
+      <dependentAssembly>
+        <assemblyIdentity name="Newtonsoft.Json" publicKeyToken="30ad4fe6b2a6aeed" culture="neutral" />
+        <bindingRedirect oldVersion="0.0.0.0-8.0.0.0" newVersion="8.0.0.0" />
+      </dependentAssembly>
+    </assemblyBinding>
+  </runtime>
+
+  <akka>
+    <hocon>
+      <![CDATA[
+      
+        akka {
+          loglevel = DEBUG
+
+          actor {
+            provider = "Akka.Remote.RemoteActorRefProvider, Akka.Remote"
+            debug {
+              receive = on
+              autoreceive = on
+              lifecycle = on
+              event-stream = on
+              unhandled = on
+            }
+          }
+
+          remote {
+            helios.tcp {
+  	          transport-class = "Akka.Remote.Transport.Helios.HeliosTcpTransport, Akka.Remote"
+  	          transport-protocol = tcp
+  	          port = 8092
+  	          hostname = "127.0.0.1"
+            }
+          }
+        }
+        
+        akka.persistence{
+          publish-plugin-commands = on
+          journal {
+              sql-server {
+                  # qualified type name of the SQL Server persistence journal actor
+                  class = "Akka.Persistence.SqlServer.Journal.SqlServerJournal, Akka.Persistence.SqlServer"
+                  # dispatcher used to drive journal actor
+                  plugin-dispatcher = "akka.actor.default-dispatcher"
+                  # connection string used for database access
+                  connection-string = "Source=.;Database=Customer;Integrated Security=Yes;"
+                  # default SQL commands timeout
+                  connection-timeout = 30s
+                  # SQL server schema name to table corresponding with persistent journal
+                  schema-name = dbo
+                  # SQL server table corresponding with persistent journal
+                  table-name = EventJournal
+                  # should corresponding journal table be initialized automatically
+                  auto-initialize = off
+                  # timestamp provider used for generation of journal entries timestamps
+                  timestamp-provider = "Akka.Persistence.Sql.Common.Journal.DefaultTimestampProvider, Akka.Persistence.Sql.Common"
+                  # metadata table
+                  metadata-table-name = Metadata
+              }
+          }
+          snapshot-store {
+              sql-server {
+                  # qualified type name of the SQL Server persistence journal actor
+                  class = "Akka.Persistence.SqlServer.Snapshot.SqlServerSnapshotStore, Akka.Persistence.SqlServer"
+                  # dispatcher used to drive journal actor
+                  plugin-dispatcher = ""akka.actor.default-dispatcher""
+                  # connection string used for database access
+                  connection-string = "Source=.;Database=Customer;Integrated Security=Yes;"
+                  # default SQL commands timeout
+                  connection-timeout = 30s
+                  # SQL server schema name to table corresponding with persistent journal
+                  schema-name = dbo
+                  # SQL server table corresponding with persistent journal
+                  table-name = SnapshotTable
+                  # should corresponding journal table be initialized automatically
+                  auto-initialize = off
+              }
+         }  
+      ]]>
+    </hocon>
+  </akka>
+
+</configuration>
