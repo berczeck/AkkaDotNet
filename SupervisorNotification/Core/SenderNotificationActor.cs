@@ -4,15 +4,13 @@ namespace Core
 {
     public class SenderEmailActor : ReceiveActor
     {
-        private readonly IActorRef coordinator;
-        public SenderEmailActor(IActorRef coordinator)
+        public SenderEmailActor()
         {
-            this.coordinator = coordinator;
 
             Receive<NotificationEmail>(x =>
             {
                 Send(x);
-                coordinator.Tell(new NotificationConfirmationSuccess(x.DeliveryId));
+                Sender.Tell(new NotificationConfirmationSuccess(x.DeliveryId));
             });
         }
 
@@ -24,15 +22,12 @@ namespace Core
 
     public class SenderSmsActor : ReceiveActor
     {
-        private readonly IActorRef coordinator;
-        public SenderSmsActor(IActorRef coordinator)
+        public SenderSmsActor()
         {
-            this.coordinator = coordinator;
-
             Receive<NotificationSms>(x =>
             {
                 Send(x);
-                coordinator.Tell(new NotificationConfirmationSuccess(x.DeliveryId));
+                Sender.Tell(new NotificationConfirmationSuccess(x.DeliveryId));
             });
         }
 

@@ -4,64 +4,83 @@ namespace Core
 {
     public class ProcessorEmailNotificationDocketActor : ReceiveActor
     {
-        private readonly IActorRef sender;
-        public ProcessorEmailNotificationDocketActor(IActorRef sender)
+        private IActorRef emailSender;
+        public ProcessorEmailNotificationDocketActor()
         {
-            this.sender = sender;
-
             Receive<NotificationEnvelopment>(x =>
             {
                 var message = BuildMessage(x);
 
-                sender.Tell(new NotificationSms(x.NotificationSetting, message, x.DeliveryId));
+                emailSender.Forward(new NotificationSms(x.NotificationSetting, message, x.DeliveryId));
             });
         }
 
         private string BuildMessage(NotificationEnvelopment envelopment)
         {
             return $"{GetType().Name} - {envelopment.DeliveryId} - {envelopment.Notification.Type} - {envelopment.NotificationSetting.Host}";
+        }
+
+        protected override void PreStart()
+        {
+            var props = Props.Create(() => new SenderEmailActor());
+            emailSender = Context.ActorOf(props, "emailSender");
+            base.PreStart();
+        }
+
+        protected override SupervisorStrategy SupervisorStrategy()
+        {
+            return base.SupervisorStrategy();
         }
     }
 
     public class ProcessorEmailNotificationSubmitEnquiryActor : ReceiveActor
     {
-        private readonly IActorRef sender;
-        public ProcessorEmailNotificationSubmitEnquiryActor(IActorRef sender)
+        private IActorRef emailSender;
+        public ProcessorEmailNotificationSubmitEnquiryActor()
         {
-            this.sender = sender;
-
             Receive<NotificationEnvelopment>(x =>
             {
                 var message = BuildMessage(x);
-
-                sender.Tell(new NotificationSms(x.NotificationSetting, message, x.DeliveryId));
+                emailSender.Forward(new NotificationSms(x.NotificationSetting, message, x.DeliveryId));
             });
         }
 
         private string BuildMessage(NotificationEnvelopment envelopment)
         {
             return $"{GetType().Name} - {envelopment.DeliveryId} - {envelopment.Notification.Type} - {envelopment.NotificationSetting.Host}";
+        }
+
+        protected override void PreStart()
+        {
+            var props = Props.Create(() => new SenderEmailActor());
+            emailSender = Context.ActorOf(props, "emailSender");
+            base.PreStart();
         }
     }
 
     public class ProcessorEmailNotificationLinkActor : ReceiveActor
     {
-        private readonly IActorRef sender;
-        public ProcessorEmailNotificationLinkActor(IActorRef sender)
+        private IActorRef emailSender;
+        public ProcessorEmailNotificationLinkActor()
         {
-            this.sender = sender;
-
             Receive<NotificationEnvelopment>(x =>
             {
                 var message = BuildMessage(x);
-
-                sender.Tell(new NotificationSms(x.NotificationSetting, message, x.DeliveryId));
+                
+                emailSender.Forward(new NotificationSms(x.NotificationSetting, message, x.DeliveryId));
             });
         }
 
         private string BuildMessage(NotificationEnvelopment envelopment)
         {
             return $"{GetType().Name} - {envelopment.DeliveryId} - {envelopment.Notification.Type} - {envelopment.NotificationSetting.Host}";
+        }
+
+        protected override void PreStart()
+        {
+            var props = Props.Create(() => new SenderEmailActor());
+            emailSender = Context.ActorOf(props, "emailSender");
+            base.PreStart();
         }
     }
 }
