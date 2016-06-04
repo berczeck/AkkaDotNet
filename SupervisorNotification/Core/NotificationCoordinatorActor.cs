@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Akka.Actor;
 using Akka.Persistence;
+using Akka.Routing;
 
 namespace Core
 {
@@ -27,7 +28,7 @@ namespace Core
             return notificationSetting;
         }
     }
-    
+
     public class NotificationCounter
     {
         public NotificationSetting NotificationSetting { get; }
@@ -72,7 +73,7 @@ namespace Core
             Command<SendEmailNotification>(x =>
             {
                 var setting = NotificationCounterManager.GetNotificationSettingAvailable(NotificationSettingType.Email);
-                if(setting == null)
+                if (setting == null)
                 {
                     // TODO: Become: persist all email mesages until reset
                     PersisteMessage(x);
@@ -129,16 +130,13 @@ namespace Core
         protected override void PreStart()
         {
             Procesors = new Dictionary<string, IActorRef>();
-            var notificaitonSmsSender = Context.ActorOf(Props.Create(() => new SenderSmsActor(Self)));
-            var notificaitonEmailSender = Context.ActorOf(Props.Create(() => new SenderEmailActor(Self)));
 
-            var smsDocketNotification = Context.ActorOf(Props.Create(() => new ProcessorSmsNotificationDocketActor(notificaitonSmsSender)));
-            var smsKeyDocumentNotification = Context.ActorOf(Props.Create(() => new ProcessorSmsNotificationKeyDocumentActor(notificaitonSmsSender)));
+            var smsDocketNotification = Context.ActorOf(new RoundRobinPool(5).Props(Props.Create<ProcessorSmsNotificationDocketActor>()), "ProcessorSmsNotificationDocketActor");
+            var smsKeyDocumentNotification = Context.ActorOf(new RoundRobinPool(5).Props(Props.Create<ProcessorSmsNotificationKeyDocumentActor>()), "ProcessorSmsNotificationKeyDocumentActor");
 
-
-            var emailDocketNotification = Context.ActorOf(Props.Create(() => new ProcessorEmailNotificationDocketActor(notificaitonEmailSender)));
-            var emailLinkNotification = Context.ActorOf(Props.Create(() => new ProcessorEmailNotificationLinkActor(notificaitonEmailSender)));
-            var emailEnquiryNotification = Context.ActorOf(Props.Create(() => new ProcessorEmailNotificationSubmitEnquiryActor(notificaitonEmailSender)));
+            var emailDocketNotification = Context.ActorOf(new RoundRobinPool(5).Props(Props.Create<ProcessorEmailNotificationDocketActor>()), "ProcessorEmailNotificationDocketActor");
+            var emailLinkNotification = Context.ActorOf(new RoundRobinPool(5).Props(Props.Create<ProcessorEmailNotificationLinkActor>()), "ProcessorEmailNotificationLinkActor");
+            var emailEnquiryNotification = Context.ActorOf(new RoundRobinPool(5).Props(Props.Create<ProcessorEmailNotificationSubmitEnquiryActor>()), "ProcessorEmailNotificationSubmitEnquiryActor");
 
             Procesors.Add(Constants.SmsDocket, smsDocketNotification);
             Procesors.Add(Constants.SmsKeyDocument, smsKeyDocumentNotification);
@@ -153,6 +151,25 @@ namespace Core
             Context.System.Scheduler.ScheduleTellOnce(TimeSpan.FromMinutes(intMinutesUntilNextDay), Self, new ResetNotificaitonSetting(), Self);
 
             base.PreStart();
+        }
+
+        protected override SupervisorStrategy SupervisorStrategy()
+        {
+            return new OneForOneStrategy(
+                maxNrOfRetries: 10,
+                withinTimeRange: TimeSpan.FromSeconds(30),
+                localOnlyDecider: x =>
+                {
+                    // Maybe ArithmeticException is not application critical
+                    // so we just ignore the error and keep going.
+                    if (x is ArithmeticException) return Directive.Resume;
+                    // Error that we have no idea what to do with
+                    else if (x is NotImplementedException) return Directive.Escalate;
+                    // Error that we can't recover from, stop the failing child
+                    else if (x is NotSupportedException) return Directive.Stop;
+                    // otherwise restart the failing child
+                    else return Directive.Restart;
+            });
         }
     }
 }
