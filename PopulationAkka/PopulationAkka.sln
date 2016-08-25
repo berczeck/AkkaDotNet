@@ -1,0 +1,40 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PopulationAkka", "PopulationAkka\PopulationAkka.csproj", "{F289BBC6-71CF-4B1B-8FB6-62B3CF870420}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AkkaPopulation", "AkkaPopulation\AkkaPopulation.csproj", "{02D05F32-EEFA-4C45-A533-3A5BE4A7F039}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AkkaPopulation.Server", "AkkaPopulation.Server\AkkaPopulation.Server.csproj", "{8D749B9C-018A-4477-9B83-E15BB3E1EE24}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core", "Core\Core.csproj", "{EAF7899F-29E6-4C0D-BF48-D67DD0BD1F29}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F289BBC6-71CF-4B1B-8FB6-62B3CF870420}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F289BBC6-71CF-4B1B-8FB6-62B3CF870420}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F289BBC6-71CF-4B1B-8FB6-62B3CF870420}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F289BBC6-71CF-4B1B-8FB6-62B3CF870420}.Release|Any CPU.Build.0 = Release|Any CPU
+		{02D05F32-EEFA-4C45-A533-3A5BE4A7F039}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{02D05F32-EEFA-4C45-A533-3A5BE4A7F039}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{02D05F32-EEFA-4C45-A533-3A5BE4A7F039}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{02D05F32-EEFA-4C45-A533-3A5BE4A7F039}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8D749B9C-018A-4477-9B83-E15BB3E1EE24}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8D749B9C-018A-4477-9B83-E15BB3E1EE24}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8D749B9C-018A-4477-9B83-E15BB3E1EE24}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8D749B9C-018A-4477-9B83-E15BB3E1EE24}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EAF7899F-29E6-4C0D-BF48-D67DD0BD1F29}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EAF7899F-29E6-4C0D-BF48-D67DD0BD1F29}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EAF7899F-29E6-4C0D-BF48-D67DD0BD1F29}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EAF7899F-29E6-4C0D-BF48-D67DD0BD1F29}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
