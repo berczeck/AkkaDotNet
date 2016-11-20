@@ -14,10 +14,10 @@ namespace Backend
     {
         static void Main(string[] args)
         {
+            Console.ForegroundColor = ConsoleColor.Yellow;
             using (var system = ActorSystem.Create("demo"))
             {
                 var analyzer = system.ActorOf<AnalyzerCoordinatorActor>($"{nameof(AnalyzerCoordinatorActor)}");
-                Thread.Sleep(2000);
                 analyzer.Tell(new StartAnalysis());
                 Console.WriteLine("Analysis started");
                 Console.ReadLine();
@@ -67,13 +67,13 @@ namespace Backend
         private KeywordAnalyzed _keywordAnalyzed;
         public AnalyzerActor()
         {
-            SetReceiveTimeout(TimeSpan.FromSeconds(30));
+            //SetReceiveTimeout(TimeSpan.FromSeconds(30));
             Receive<StartAnalysis>(x => HandleStartAnalysis(x));
             Receive<CategoryAnalyzed>(x => HandleCategoryAnalyzed(x));
             Receive<KeywordAnalyzed>(x => HandleKeywordAnalyzed(x));
             Receive<AnalysisFinished>(x => HandleAnalysisFinished(x));
             Receive<SendRealTimeNotification>(x => HandleSendRealTimeNotification(x));
-            Receive<ReceiveTimeout>(x => HandleReceiveTimeout(x));
+            //Receive<ReceiveTimeout>(x => HandleReceiveTimeout(x));
             Receive<Terminated>(x =>
             {
                 if (!Context.GetChildren().Any())
@@ -182,7 +182,7 @@ namespace Backend
             Receive<SendSms>(x =>
             {
                 Thread.Sleep(200);
-                Trace.Log("Sms notification processed");
+                Trace.Log($"Sms notification processed id {x.Index}");
             });
             Receive<ReceiveTimeout>(x => Self.Tell(PoisonPill.Instance));
         }
@@ -196,7 +196,7 @@ namespace Backend
             Receive<SendEmail>(x =>
             {
                 Thread.Sleep(300);
-                Trace.Log("Email noticication processed");
+                Trace.Log($"Email noticication processed id {x.Index}");
             });
             Receive<ReceiveTimeout>(x => Self.Tell(PoisonPill.Instance));
         }

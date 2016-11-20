@@ -4,8 +4,8 @@ namespace Messages
 {
     public class Constant
     {
-        public const int MessageCount = 8*100;
-        public const int WorkerCount = 10;
+        public const int MessageCount = 100*100;
+        public const int WorkerCount = 50;
     }
     public class StartAnalysis
     {

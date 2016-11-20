@@ -12,7 +12,7 @@ namespace TaskBackend
     {
         static void Main(string[] args)
         {
-            Thread.Sleep(2000);
+            Console.ForegroundColor = ConsoleColor.Green;
             var _stopwatch = new Stopwatch();
             _stopwatch.Start();
             Console.WriteLine($"Start time: {DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss")}");
@@ -63,13 +63,13 @@ namespace TaskBackend
         private static void SendSms(SendSms x)
         {
             Thread.Sleep(200);
-            Log("Sms notification processed");
+            Log($"Sms notification processed id {x.Index}");
         }
 
         private static void SendEmail(SendEmail x)
         {
             Thread.Sleep(300);
-            Log("Email noticication processed");
+            Log($"Email noticication processed id {x.Index}");
         }
 
         private static void SaveRecords()
