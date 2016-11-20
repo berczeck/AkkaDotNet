@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AkkaBackend", "Backend\AkkaBackend.csproj", "{FC61F3A3-B58C-40FB-A917-030ACF009334}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskBackend", "TaskBackend\TaskBackend.csproj", "{847FC2FE-1910-459B-9F87-1E3F4B99D2CF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Messages", "Messages\Messages.csproj", "{EDE03542-0149-4EE6-BC5A-D5590E86C9FF}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{FC61F3A3-B58C-40FB-A917-030ACF009334}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FC61F3A3-B58C-40FB-A917-030ACF009334}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FC61F3A3-B58C-40FB-A917-030ACF009334}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FC61F3A3-B58C-40FB-A917-030ACF009334}.Release|Any CPU.Build.0 = Release|Any CPU
+		{847FC2FE-1910-459B-9F87-1E3F4B99D2CF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{847FC2FE-1910-459B-9F87-1E3F4B99D2CF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{847FC2FE-1910-459B-9F87-1E3F4B99D2CF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{847FC2FE-1910-459B-9F87-1E3F4B99D2CF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EDE03542-0149-4EE6-BC5A-D5590E86C9FF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EDE03542-0149-4EE6-BC5A-D5590E86C9FF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EDE03542-0149-4EE6-BC5A-D5590E86C9FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EDE03542-0149-4EE6-BC5A-D5590E86C9FF}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
